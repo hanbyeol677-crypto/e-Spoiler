@@ -1,93 +1,95 @@
-require('dotenv').config(); // 최상단에 추가 (환경 변수 로드)
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 const app = express();
 
-app.use(cors());
+// [중요] CORS 설정: 모든 도메인에서 접속할 수 있도록 허용합니다.
+app.use(cors({
+    origin: '*', 
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    allowedHeaders: ['Content-Type']
+}));
+
 app.use(express.json());
 
-// [수정] 직접적인 주소 대신 환경 변수 사용
-const MONGO_URI = process.env.MONGO_URI;
+// 1. MongoDB 연결
+// Render의 Environment 탭에 MONGO_URI가 반드시 설정되어 있어야 합니다.
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('✅ MongoDB Connected...'))
+    .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB 연결 성공!'))
-    .catch(err => console.log('연결 실패:', err));
-
-// 관리자 아이디 설정
-const ADMIN_ID = 'hanbyeol677';
-
-// --- 스키마 및 모델 ---
-const RegistrationSchema = new mongoose.Schema({
+// 2. 데이터 모델 정의
+const TeamSchema = new mongoose.Schema({
     teamName: String,
     captainName: String,
     tier: String,
-    createdAt: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now }
 });
-const Registration = mongoose.model('Registration', RegistrationSchema);
+const Team = mongoose.model('Team', TeamSchema);
 
 const UserSchema = new mongoose.Schema({
     userId: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    joinedAt: { type: Date, default: Date.now }
+    password: { type: String, required: true }
 });
 const User = mongoose.model('User', UserSchema);
 
-// --- API 경로 ---
+// 3. API 라우트
 
-app.post('/api/register', async (req, res) => {
-    try {
-        const newReg = new Registration(req.body);
-        await newReg.save();
-        res.status(201).send("신청 성공!");
-    } catch (error) {
-        res.status(500).send("저장 실패");
-    }
-});
-
-app.get('/api/register', async (req, res) => {
-    try {
-        const teams = await Registration.find().sort({ createdAt: -1 });
-        res.json(teams);
-    } catch (error) {
-        res.status(500).send("조회 실패");
-    }
-});
-
-app.delete('/api/register/:id', async (req, res) => {
-    const { userId } = req.query;
-    if (userId !== ADMIN_ID) return res.status(403).send("권한이 없습니다.");
-    try {
-        await Registration.findByIdAndDelete(req.params.id);
-        res.send("삭제 성공!");
-    } catch (error) {
-        res.status(500).send("삭제 실패");
-    }
-});
-
+// (1) 회원가입
 app.post('/api/signup', async (req, res) => {
     try {
         const { userId, password } = req.body;
         const newUser = new User({ userId, password });
         await newUser.save();
-        res.status(201).send("회원가입 완료!");
-    } catch (error) {
-        res.status(500).send("가입 실패");
+        res.status(201).json({ message: "회원가입 성공" });
+    } catch (err) {
+        res.status(400).json({ message: "이미 존재하는 아이디입니다." });
     }
 });
 
+// (2) 로그인
 app.post('/api/login', async (req, res) => {
     const { userId, password } = req.body;
     const user = await User.findOne({ userId, password });
     if (user) {
-        res.send({ message: "로그인 성공", user: user.userId, isAdmin: (user.userId === ADMIN_ID) });
+        res.json({ user: user.userId });
     } else {
-        res.status(401).send("아이디/비번 오류");
+        res.status(401).json({ message: "로그인 실패" });
     }
 });
 
-// [수정] 포트 설정 (배포 환경 대비)
+// (3) 대회 신청
+app.post('/api/register', async (req, res) => {
+    try {
+        const newTeam = new Team(req.body);
+        await newTeam.save();
+        res.status(201).json({ message: "신청 완료" });
+    } catch (err) {
+        res.status(500).json({ message: "신청 실패" });
+    }
+});
+
+// (4) 신청 현황 조회
+app.get('/api/register', async (req, res) => {
+    const teams = await Team.find().sort({ date: -1 });
+    res.json(teams);
+});
+
+// (5) 신청 삭제 (관리자 전용)
+app.delete('/api/register/:id', async (req, res) => {
+    const { userId } = req.query;
+    if (userId !== 'hanbyeol677') {
+        return res.status(403).send("권한이 없습니다.");
+    }
+    await Team.findByIdAndDelete(req.params.id);
+    res.send("삭제 성공");
+});
+
+// 4. 서버 실행
+// [중요] Render는 process.env.PORT를 사용해야 연결됩니다.
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
