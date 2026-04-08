@@ -1,5 +1,5 @@
 // 1. 설정: API 주소
-const REG_API_URL = 'http://localhost:3000/api/register';
+const REG_API_URL = 'https://e-spoiler.onrender.com/api/register';
 const ADMIN_ID = 'hanbyeol677';
 
 // 2. 페이지 로드 시 실행
