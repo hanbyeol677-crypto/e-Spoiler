@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL 챔피언스 리그 신청</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/3b948670c5.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav class="top-nav">
+            <div id="authContainer" class="auth-group">
+                <div id="loggedOutUI">
+                    <button class="nav-btn" onclick="location.href='login.html'">로그인</button>
+                    <button class="nav-btn" onclick="location.href='signup.html'">회원가입</button>
+                </div>
+                
+                <div id="loggedInUI" style="display: none;">
+                    <i class="fa-solid fa-circle-user profile-icon"></i>
+                    <span id="userNameDisplay" class="user-name"></span>님
+                    <button class="logout-btn" onclick="logout()">로그아웃</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-title">
+            <h1>SUMMONER'S CUP 2026</h1>
+            <p>당신의 전설을 증명하세요</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="registration">
+            <h2>참가 신청</h2>
+            <form id="regForm">
+                <div class="input-group">
+                    <label for="teamName">팀 이름</label>
+                    <input type="text" id="teamName" placeholder="팀명을 입력하세요" required>
+                </div>
+                <div class="input-group">
+                    <label for="captainName">팀장 닉네임</label>
+                    <input type="text" id="captainName" placeholder="소환사명#태그" required>
+                </div>
+                <div class="input-group">
+                    <label for="tier">평균 티어</label>
+                    <select id="tier">
+                        <option value="iron">아이언</option>
+                        <option value="bronze">브론즈</option>
+                        <option value="silver">실버</option>
+                        <option value="gold">골드</option>
+                        <option value="platinum">플래티넘</option>
+                        <option value="emerald">에메랄드</option>
+                        <option value="diamond">다이아몬드</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">신청하기</button>
+            </form>
+            <button id="loadTeamsBtn" class="secondary-btn">신청 현황 보기</button>
+
+            <div id="teamListContainer" class="hidden">
+                <hr class="divider">
+                <h3>현재 신청 팀 목록</h3>
+                <table id="teamTable">
+                    <thead>
+                        <tr>
+                            <th>팀 이름</th>
+                            <th>팀장</th>
+                            <th>티어</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teamListBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+/* 1. 기본 초기화 및 폰트 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --main-color: #c89b3c;    /* 골드 */
+    --sub-color: #00bcff;     /* 스카이블루 */
+    --bg-dark: #0a0e13;       /* 배경 블랙 */
+    --form-bg: #1e2328;       /* 컨테이너 그레이 */
+    --danger-color: #ff4d4d;  /* 삭제/로그아웃 레드 */
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #f0e6d2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 15px;
+}
+
+/* 2. 헤더 및 내비게이션 */
+header {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.auth-group {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(200, 155, 110, 0.2);
+    gap: 15px;
+}
+
+/* 로그인/회원가입 버튼 */
+.nav-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--main-color);
+    color: var(--main-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background: var(--main-color);
+    color: #010a13;
+}
+
+/* 로그아웃 버튼 (보완된 부분) */
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* 3. 메인 타이틀 */
+.main-title {
+    text-align: center;
+    margin: 30px 0 50px;
+}
+
+.main-title h1 {
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+    color: var(--main-color);
+    text-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
+    letter-spacing: 2px;
+}
+
+.main-title p {
+    color: #a09478;
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+
+/* 4. 메인 컨텐츠 (신청 폼) */
+main {
+    width: 100%;
+    max-width: 550px;
+    background: var(--form-bg);
+    padding: 40px 30px;
+    border: 1px solid var(--main-color);
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+    margin-bottom: 60px;
+}
+
+h2 { 
+    margin-bottom: 25px; 
+    color: var(--sub-color); 
+    text-align: center; 
+    font-size: 1.8rem;
+}
+
+.input-group { margin-bottom: 20px; }
+
+label { 
+    display: block; 
+    margin-bottom: 8px; 
+    color: #a09478;
+    font-size: 0.95rem;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    background: #010a13;
+    border: 1px solid #463714;
+    color: white;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1rem;
+}
+
+input:focus, select:focus {
+    border-color: var(--main-color);
+}
+
+/* 티어 선택창 화살표 간격 조절 */
+select#tier {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C2.185 5.355 2.401 5 2.809 5h10.382c.408 0 .624.355.358.658l-4.796 5.482a1 1 0 0 1-1.506 0z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    padding-right: 45px;
+}
+
+/* 5. 버튼 공통 스타일 */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--main-color);
+    border: none;
+    color: #010a13;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #f0e6d2;
+}
+
+.secondary-btn {
+    margin-top: 15px;
+    background: transparent;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.secondary-btn:hover {
+    background: rgba(200, 170, 110, 0.1);
+}
+
+/* 6. 신청 현황 목록 테이블 */
+.hidden { display: none !important; }
+.divider { border: 0; border-top: 1px solid #3c3c41; margin: 30px 0; }
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+#teamTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 400px;
+}
+
+#teamTable th, #teamTable td {
+    border: 1px solid #3c3c41;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+#teamTable th {
+    background-color: #010a13;
+    color: var(--main-color);
+    font-size: 0.9rem;
+}
+
+/* 관리자 삭제 버튼 스타일 */
+.delete-btn {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* 7. 미디어 쿼리 (모바일 대응) */
+@media screen and (max-width: 768px) {
+    .top-nav { justify-content: center; }
+    
+    .auth-group {
+        padding: 8px 15px;
+        gap: 10px;
+    }
+
+    main {
+        padding: 30px 20px;
+    }
+
+    .main-title h1 { font-size: 2.2rem; }
+}

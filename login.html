@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 - SUMMONER'S CUP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>로그인</h2>
+        <div class="input-group">
+            <input type="text" id="loginId" placeholder="아이디" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="loginPw" placeholder="비밀번호" required>
+        </div>
+        <button class="auth-btn" onclick="login()">로그인</button>
+        <p class="auth-link">계정이 없으신가요? <a href="signup.html">회원가입</a></p>
+        <p class="auth-link"><a href="index.html">메인으로 돌아가기</a></p>
+    </div>
+
+    <script>
+        async function login() {
+            const userId = document.getElementById('loginId').value;
+            const password = document.getElementById('loginPw').value;
+
+            if (!userId || !password) {
+                alert("아이디와 비밀번호를 입력해주세요.");
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert(`${data.user}님, 환영합니다!`);
+                    localStorage.setItem('loggedInUser', data.user); // 로그인 정보 저장
+                    location.href = 'index.html';
+                } else {
+                    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                }
+            } catch (error) {
+                alert("서버 연결 실패!");
+            }
+        }
+    </script>
+</body>
+</html>

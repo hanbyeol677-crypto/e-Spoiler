@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>회원가입</h2>
+        <input type="text" id="signupId" placeholder="아이디" required>
+        <input type="password" id="signupPw" placeholder="비밀번호" required>
+        <button onclick="signup()">가입하기</button>
+    </div>
+
+    <script>
+        async function signup() {
+            const userId = document.getElementById('signupId').value;
+            const password = document.getElementById('signupPw').value;
+
+            const res = await fetch('http://localhost:3000/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, password })
+            });
+
+            if(res.ok) {
+                alert("가입 성공! 로그인 해주세요.");
+                location.href = 'login.html';
+            } else {
+                alert("이미 있는 아이디거나 오류가 발생했습니다.");
+            }
+        }
+    </script>
+</body>
+</html>
