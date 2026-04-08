@@ -88,4 +88,6 @@ app.post('/api/login', async (req, res) => {
 
 // [수정] 포트 설정 (배포 환경 대비)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`서버가 ${PORT}번 포트에서 작동 중!`));
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
