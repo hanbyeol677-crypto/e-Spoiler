@@ -30,7 +30,8 @@
             }
 
             try {
-                const res = await fetch('http://localhost:3000/api/login', {
+                // [수정됨] localhost 대신 Render 주소 사용
+                const res = await fetch('https://e-spoiler.onrender.com/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId, password })
@@ -40,13 +41,14 @@
 
                 if (res.ok) {
                     alert(`${data.user}님, 환영합니다!`);
-                    localStorage.setItem('loggedInUser', data.user); // 로그인 정보 저장
+                    localStorage.setItem('loggedInUser', data.user); 
                     location.href = 'index.html';
                 } else {
                     alert("아이디 또는 비밀번호가 일치하지 않습니다.");
                 }
             } catch (error) {
-                alert("서버 연결 실패!");
+                console.error("Login Error:", error);
+                alert("서버 연결 실패! 잠시 후 다시 시도해주세요.");
             }
         }
     </script>
