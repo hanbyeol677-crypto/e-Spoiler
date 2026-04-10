@@ -35,6 +35,18 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
+// 서버 접속 확인용 루트 경로 (브라우저에서 확인 가능)
+app.get('/', (req, res) => {
+    res.send(`
+        <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+            <h1 style="color: #c89b3c;">🚀 SUMMONER'S CUP 2026 API Server</h1>
+            <p style="color: #555;">서버가 정상적으로 실행 중입니다!</p>
+            <p style="font-size: 0.9em; color: #888;">현재 연결 상태: ✅ MongoDB Connected</p>
+            <hr style="width: 200px; border: 1px solid #c89b3c;">
+            <p style="font-size: 0.8em;">Developed by Park Han-byul</p>
+        </div>
+    `);
+});
 // 3. API 라우트
 
 // (1) 회원가입
